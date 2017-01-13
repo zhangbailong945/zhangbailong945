@@ -1,0 +1,59 @@
+
+/**
+ * @param $dataUrl  获取最新文章url post地址
+ * @param $articleUrl 查看文章url post地址
+ * @returns
+ */
+function getRecentThree($recentUrl,$articleUrl)
+{
+	$.ajax({
+ 	    type: 'POST',
+ 	    async: true,
+ 	    url:$recentUrl,
+ 	    dataType: "json",
+ 	    success: function(data)
+ 	    {
+		    $(".recent-post").html('');
+ 	    	if(data)
+               { 
+                   var html = '';
+                   for (var i = 0; i <data.length; i++) {
+                       html += '<div class="recent-single-post">';
+                       html += '<a href="'+$articleUrl+'/'+data[i]["article_id"]+'" class="post-title">'+data[i]["article_title"]+'</a>';
+                       html += '<div class="date">'+data[i]["article_created"]+'</div>';
+                       html += '</div>';
+                   }
+                   $(".recent-post").append(html); 
+                                           
+ 	          }
+              else
+              {	            	
+             	  var html='';
+                  html += '<div class="recent-single-post">';
+                  html += '<a href="#" class="post-title"></a>';
+                  html += '<div class="date"></div>';
+                  html += '</div>';
+                  $(".recent-post").append(html);
+ 	          }
+ 	   }
+ 	});
+}
+
+
+/**
+ * 
+ * @param $searchUrl1   //默认搜索地址
+ * @param $searchUrl2  //带关键字地址
+ * @param $keyword   //关键字
+ */
+function dosearch($searchUrl1,$searchUrl2,$keyword)
+{
+    if($keyword.length == 0)
+    {   	
+    	location.href=$searchUrl1;
+    }
+    else
+    {
+    	location.href=$searchUrl2;
+    }
+}
