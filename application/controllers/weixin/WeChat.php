@@ -13,9 +13,8 @@ class WeChat extends CI_Controller{
 
 	/*access_token*/
 	const ACCESS_TOKEN='bOInpetaIzunDn5CefXiCkCu74MRc4c2894XU2Nu7a-cC23CJly48RQsxmK6KI34SkvPw67gv1PijJBBNa53pyrOWez2PW70mFbRwBtftS2d89-zJH8Ise9os57aRdgaJRTeADAQYA';
-
-
-	function __construct()
+        private $object;
+                	function __construct()
 	{
 		parent::__construct();
 
@@ -32,6 +31,17 @@ class WeChat extends CI_Controller{
 		$this->msg();
 
 	}
+        /**
+         * 
+         * @return boolean
+         */
+        function checkAccessToken()
+        {
+            $this->load->model('weixin/Access_Token_Model');
+            $flag=$this->Access_Token_Model->checkAccessToken();
+            echo $flag;
+            return $flag;
+        }
 
 	/**
 	 *获取微信的ACCESSS_TOKEN
@@ -39,27 +49,41 @@ class WeChat extends CI_Controller{
          * 
 	 */
 	function getAccessToken()
-	{
-		$url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WeChat::APPID.'&secret='.WeChat::APPSECRET.'';
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$output = curl_exec($ch);
-		curl_close($ch);
-		$jsoninfo = json_decode($output, true);
-		$access_token = $jsoninfo["access_token"];
-		return $access_token;
+	{        
+            //过期了，要更新access_token
+            if($this->checkAccessToken())
+            {
+               $this->load->model('weixin/Access_Token_Model');
+               $object=$this->Access_Token_Model->getAccessToken();
+               $this->setAccessToken($object);
+               $this->object=$this->Access_Token_Model->getAccessToken();
 
+            }
+            else
+            {
+                $this->load->model('weixin/Access_Token_Model');
+                $this->object=$this->Access_Token_Model->getAccessToken();
+            }
+            
 	}
         
         /**
          * 设置
          */
-        function setAccessToken()
+        function setAccessToken($object)
         {
-            
+            $this->load->model('weixin/Access_Token_Model');            
+            $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$object->app_id.'&secret='.$object->app_secret.'';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            $jsoninfo = json_decode($output, true);
+            $access_token = $jsoninfo["access_token"];
+            $this->Access_Token_Model->setAccessToken($access_token,$object);
         }
 
 	/**
