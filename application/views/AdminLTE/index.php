@@ -273,10 +273,11 @@ $submit_Path=site_url();
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="<?php echo $submit_Path;?>administrator/Article/index"><i class="fa fa-circle-o"></i>笔记列表</a></li>
-            <li class="active"><a href="<?php echo $submit_Path;?>administrator/Article/articleadd"><i class="fa fa-circle-o"></i>撰写笔记</a></li>
+            <li class="active"><a href="<?php echo $submit_Path;?>weixin/WxMenu/Menulist"><i class="fa fa-circle-o"></i>菜单列表</a></li>
           </ul>
         </li>
+        
+        
        </ul> 
     </section>
     <!-- /.sidebar -->
