@@ -29,7 +29,7 @@ class WeChat extends CI_Controller{
 		//$this->createMenu($data);
                    //$this->getAccessToken();
 		$this->msg();
-
+                
 	}
         /**
          * 

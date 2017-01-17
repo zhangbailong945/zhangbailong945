@@ -57,4 +57,6 @@ class Access_Token_Model extends CI_Model{
         $this->db->update('wx_access_token',$data);
     }
     
+    
+    
 }
