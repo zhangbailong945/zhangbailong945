@@ -329,7 +329,6 @@ var _hmt = _hmt || [];
     $(function(){
     	getRecentThree($recentUrl,$articleUrl);
      });
-        
 	</script>
 
 <script type="text/javascript" src="<?php echo $LoachBlogSrc_Path;?>/js/baidu.js"></script>
